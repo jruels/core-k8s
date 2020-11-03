@@ -1,4 +1,4 @@
-# Core Kubernetes Course Site
+# Core Kubernetes Class Site
 
 This site includes the labs for Core Kubernetes class. 
 
