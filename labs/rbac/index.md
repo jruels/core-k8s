@@ -18,13 +18,13 @@ This guide will show you how to work with RBAC so you can properly deal with iss
 One basic Kubernetes feature is that  [all its resources are modeled API objects](https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/) , which allow CRUD (Create, Read, Update, Delete) operations. 
 
 Examples of resources are:
-*  [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod/) .
-*  [PersistentVolumes](https://kubernetes.io/docs/concepts/storage/volumes/) .
-*  [ConfigMaps](https://kubernetes.io/docs/tasks/configure-pod-container/configmap/) .
-*  [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) .
-*  [Nodes](https://kubernetes.io/docs/concepts/architecture/nodes/) .
-*  [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) .
-*  [Namespaces](https://kubernetes.io/docs/user-guide/namespaces/) .
+*  [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod/) 
+*  [PersistentVolumes](https://kubernetes.io/docs/concepts/storage/volumes/) 
+*  [ConfigMaps](https://kubernetes.io/docs/tasks/configure-pod-container/configmap/) 
+*  [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) 
+*  [Nodes](https://kubernetes.io/docs/concepts/architecture/nodes/) 
+*  [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) 
+*  [Namespaces](https://kubernetes.io/docs/user-guide/namespaces/) 
 
 Examples of possible operations over these resources are:
 * *create*
