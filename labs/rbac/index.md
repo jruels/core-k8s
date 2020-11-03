@@ -1,4 +1,4 @@
-# Advanced Kubernetes RBAC
+# Kubernetes RBAC
 ## Configure RBAC In Your Kubernetes Cluster
 ### Introduction
 This guide will go through the basic Kubernetes Role-Based Access Control (RBAC) API Objects, showing a common use case (create a user with limited access. At the end of this guide, you should have enough knowledge to implement RBAC policies in your cluster. 
