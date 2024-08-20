@@ -2,10 +2,6 @@
 
 This site includes the labs for Core Kubernetes class. 
 
-## Slides
-[Day 1](https://www.dropbox.com/s/fqht1r3sioesko9/00%20-%20Intro%20to%20Kubernetes%20Day%201.pdf?dl=0)   
-[Day 2](https://www.dropbox.com/s/17385dy7ts33nwt/01%20-%20Intro%20to%20Kubernetes%20Day%202.pdf?dl=0)   
-
 ## lab VMs  
 [//]: # (https://docs.google.com/spreadsheets/d/1psMAAPxgHq9wpZVftao9UT8MIWR1xljq-WB8aOiVBRI/edit?usp=sharing)  
 Instructor will provide lab VM sheet.
