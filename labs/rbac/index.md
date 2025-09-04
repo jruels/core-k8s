@@ -155,8 +155,9 @@ kubectl create -f rolebinding-deployment-manager.yaml
 Now you should be able to execute the following commands without any issues:
 
 ```
-kubectl --context=employee-context run --image nginx acme-nginx
+kubectl --context=employee-context run --image nginx acme-nginx --restart=Never
 ```
+**Note**: Added `--restart=Never` to create a Pod instead of a Deployment
 
 You can also list Pods as `employee` user
 

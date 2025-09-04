@@ -31,8 +31,9 @@ kubectl get pods -n kube-system
 
 5. Deploy `nginx` Pod
 ```
-kubectl run nginx-pod-lab --image=nginx:alpine --port=80
+kubectl run nginx-pod-lab --image=nginx:alpine --port=80 --restart=Never
 ```
+**Note**: The `--restart=Never` flag ensures this creates a Pod (not a Deployment)
 
 6. Confirm Pod is running'
 ```
@@ -154,8 +155,9 @@ exit
 ### Deploy MySQLDB and connect to the client
 1. Deploy a MySQL DB image
 ```
-kubectl run mysql-demo --image=mysql:5.5 --port 3306 --env="MYSQL_ROOT_PASSWORD=password"
+kubectl run mysql-demo --image=mysql:5.7 --port=3306 --env="MYSQL_ROOT_PASSWORD=password" --restart=Never
 ```
+**Note**: Updated to MySQL 5.7 as 5.5 is deprecated. Added `--restart=Never` to create a Pod.
 
 2. Show all of the running Pods, note the name of the Pod you just created
 ```

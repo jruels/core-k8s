@@ -100,7 +100,9 @@ hello-world-deployment   NodePort    10.98.17.127   <none>        80:30901/TCP  
 Notice the `NodePort` is 30901. If you look back at the service manifest you will notice we defined a static `NodePort`. 
 
 ## Load application 
-Using a browser, open the web page {% raw %} (e.g. `http://<MasterIP>:30901` ) {% endraw %}
+Using a browser, open the web page at: `http://<LEADER_IP>:30901`
+
+Replace `<LEADER_IP>` with your leader node's IP address.
 
 You will see a page similar to below: 
 

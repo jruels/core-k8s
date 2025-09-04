@@ -1,10 +1,17 @@
 # Install Kubernetes on AWS
+## Lab Environment Details
+- **3 VMs**: 1 Leader node + 2 Follower nodes
+- **OS**: Ubuntu 24.04 LTS
+- **Kubernetes Version**: 1.30.0 (current stable)
+
 ## Log into all servers 
 ### MacOS 
 Run the following commands in a terminal 
 ```
 chmod 600 /path/to/lab.pem
-ssh -i /path/to/lab.pem ubuntu@<server IP>
+ssh -i /path/to/lab.pem ubuntu@<LEADER_IP>     # Leader
+ssh -i /path/to/lab.pem ubuntu@<FOLLOWER_1_IP> # Follower 1  
+ssh -i /path/to/lab.pem ubuntu@<FOLLOWER_2_IP> # Follower 2
 ```
 
 ### Windows 
@@ -29,29 +36,57 @@ Following commands must be run as the root user. To become root run:
 sudo su - 
 ```
 
-Install packages required for Kubernetes on all servers as the root user
+**IMPORTANT**: Run these commands on ALL THREE servers (leader and both followers)
+
+### Update system and install dependencies
 ```
-apt-get update && apt-get install -y apt-transport-https
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+apt-get update && apt-get install -y apt-transport-https ca-certificates curl gpg
 ```
 
-Create Kubernetes repository by running the following as one command.
+### Add Kubernetes official GPG key and repository (updated for 2024)
 ```
-echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
 ```
 
-Now that you've added the repository install the packages
+### Verify container runtime
+Docker is already installed and running on the VMs. Kubernetes will use Docker as the container runtime.
+```
+docker --version
+systemctl status docker
+```
+
+If you need to start Docker:
+```
+systemctl enable docker
+systemctl start docker
+```
+
+### Install Kubernetes packages
 ```
 apt-get update
-apt-get install -y kubelet=1.19.3-00 kubeadm=1.19.3-00 kubectl
+apt-get install -y kubelet=1.30.0-1.1 kubeadm=1.30.0-1.1 kubectl=1.30.0-1.1
+apt-mark hold kubelet kubeadm kubectl
+```
+
+### Configure system for Kubernetes
+```
+# Enable IP forwarding
+echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
+sysctl -p
+
+# Disable swap
+swapoff -a
+sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 ```
 
 The kubelet is now restarting every few seconds, as it waits in a `crashloop` for `kubeadm` to tell it what to do.
 
 ### Initialize the Master 
-Run the following command on the master node to initialize 
+**ONLY run this command on the LEADER node**
+
 ```
-kubeadm init --kubernetes-version=1.19.3 --ignore-preflight-errors=all
+kubeadm init --kubernetes-version=1.30.0 --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all
 ```
 
 If everything was successful output will contain 
@@ -73,16 +108,13 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-Run following on the master to enable IP forwarding to IPTables.
+### Pod overlay network
+Install Flannel CNI plugin on the master node (**ONLY on the LEADER node**)
 ```
-sudo sysctl net.bridge.bridge-nf-call-iptables=1
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 ```
 
-### Pod overlay network
-Install a Pod network on the master node
-```
-kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
-```
+**Note**: We use Flannel because it works well with the pod-network-cidr=10.244.0.0/16 we specified during init.
 
 Wait until `coredns` pod is in a `running` state
 ```
@@ -91,9 +123,13 @@ kubectl get pods -n kube-system
 
 ### Join nodes to cluster 
 Log into each of the worker nodes and run the join command from `kubeadm init` master output. 
+
+The join command will look something like this:
 ```
-sudo kubeadm join <command from kubeadm init output> --ignore-preflight-errors=all
+sudo kubeadm join <LEADER_IP>:6443 --token <token> --discovery-token-ca-cert-hash <hash> --ignore-preflight-errors=all
 ```
+
+**IMPORTANT**: Use the exact join command from your kubeadm init output, not the example above.
 
 To confirm nodes have joined successfully log back into master and run 
 ```

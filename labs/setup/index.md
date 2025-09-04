@@ -1,4 +1,10 @@
 # Lab Setup 
+## Lab Environment
+- **3 VMs**: 1 Leader node + 2 Follower nodes
+- **SSH Key**: lab.pem 
+- **SSH Username**: ubuntu
+- **OS**: Ubuntu 24.04 LTS
+
 ## MacOS 
 Download `lab.pem` from the `keys` directory
 
@@ -9,8 +15,16 @@ chmod 600 /path/to/lab.pem
 
 ### SSH to lab servers 
 The username for SSH is `ubuntu`
+
+**Leader node (install Kubernetes here first):**
 ```
-ssh -i /path/to/lab.pem ubuntu@<LAB IP> 
+ssh -i /path/to/lab.pem ubuntu@<LEADER_IP>
+```
+
+**Follower nodes (join to cluster after leader setup):**
+```
+ssh -i /path/to/lab.pem ubuntu@<FOLLOWER_1_IP>
+ssh -i /path/to/lab.pem ubuntu@<FOLLOWER_2_IP>
 ```
 
 

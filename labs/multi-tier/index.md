@@ -147,11 +147,13 @@ redis-follower    ClusterIP   10.98.54.128   <none>        6379/TCP       6m
 ```
 
 ### Viewing the Frontend Service 
-To load the front end in a browser visit your leader servers IP and use the port from previous command. 
+To load the front end in a browser visit your leader server IP and use the port from previous command. 
 
-In the example above we can see that `frontend` Service is running on `NodePort` 31495 so I would visit the following in a web browser 
+In the example above we can see that `frontend` Service is running on `NodePort` 31495 so you would visit the following in a web browser:
 
-`http://<leaderIP>:31495`
+`http://<LEADER_IP>:31495`
+
+Replace `<LEADER_IP>` with your leader node's IP address and use the port number that was assigned to your service.
 
 ## Scale Web Frontend 
 Scaling up or down is easy because your servers are defined as a Service that uses a Deployment controller.
