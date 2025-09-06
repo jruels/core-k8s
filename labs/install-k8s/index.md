@@ -56,17 +56,10 @@ docker --version
 systemctl status docker
 ```
 
-If you need to start Docker:
-```
-systemctl enable docker
-systemctl start docker
-```
-
 ### Install Kubernetes packages
 ```
 apt-get update
 apt-get install -y kubelet=1.30.0-1.1 kubeadm=1.30.0-1.1 kubectl=1.30.0-1.1
-apt-mark hold kubelet kubeadm kubectl
 ```
 
 ### Configure system for Kubernetes
@@ -82,16 +75,16 @@ sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 The kubelet is now restarting every few seconds, as it waits in a `crashloop` for `kubeadm` to tell it what to do.
 
-### Initialize the Master 
+### Initialize the Leader
 **ONLY run this command on the LEADER node**
 
 ```
-kubeadm init --kubernetes-version=1.30.0 --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all
+kubeadm init --kubernetes-version=1.30.0 --cri-socket=unix:///var/run/cri-dockerd.sock --ignore-preflight-errors=all
 ```
 
 If everything was successful output will contain 
 ````
-Your Kubernetes master has initialized successfully!
+Your Kubernetes control-plane has initialized successfully!
 ````
 
 Note the `kubeadm join...` command, it will be needed later on.
@@ -109,27 +102,26 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
 ### Pod overlay network
-Install Flannel CNI plugin on the master node (**ONLY on the LEADER node**)
+Install Weave CNI plugin on the leader node (**ONLY on the LEADER node**)
 ```
-kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+KUBEVER=$(kubectl version | base64 | tr -d '\n')
+kubectl apply -f https://reweave.azurewebsites.net/k8s/net?k8s-version=$KUBEVER
 ```
 
-**Note**: We use Flannel because it works well with the pod-network-cidr=10.244.0.0/16 we specified during init.
-
-Wait until `coredns` pod is in a `running` state
+Wait until `coredns` pod is in a `running` state. This can take a few minutes
 ```
 kubectl get pods -n kube-system
 ```
 
 ### Join nodes to cluster 
-Log into each of the worker nodes and run the join command from `kubeadm init` master output. 
+Log into each of the follower nodes and run the join command from `kubeadm init` control-plane output. 
 
 The join command will look something like this:
 ```
-sudo kubeadm join <LEADER_IP>:6443 --token <token> --discovery-token-ca-cert-hash <hash> --ignore-preflight-errors=all
+kubeadm join <LEADER_IP>:6443 --token <token> --discovery-token-ca-cert-hash <hash> --ignore-preflight-errors=all --cri-socket=unix:///var/run/cri-dockerd.sock
 ```
 
-**IMPORTANT**: Use the exact join command from your kubeadm init output, not the example above.
+**IMPORTANT**: Use the join command from your kubeadm init output, and add `--ignore-preflight-errors=all` `--cri-socket=unix:///var/run/cri-dockerd.sock`.
 
 To confirm nodes have joined successfully log back into master and run 
 ```
