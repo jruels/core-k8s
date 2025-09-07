@@ -42,17 +42,17 @@ kubectl get pods
 
 7. Get information about Pod in `json` format 
 ```
-kubectl get pod nginx-pod-lab-<name> -o json 
+kubectl get pod nginx-pod-lab -o json 
 ``` 
 
 8. Now get info about it in `YAML` syntax
 ```
-kubectl get pod nginx-pod-lab-<name> -o yaml
+kubectl get pod nginx-pod-lab -o yaml
 ```
 
-9. Delete everything! 
+9. Delete the pod. 
 ```
-kubectl delete all --all
+kubectl delete pod nginx-pod-lab
 ```
 
 ### Create Pod from manifest
@@ -69,7 +69,7 @@ kubectl get pods
 You should see something like this: 
 ```
 NAME                            READY   STATUS    RESTARTS   AGE
-nginx-pod-lab-6b47f84ff-t9qzk   1/1     Running   0          18m
+nginx-pod-lab                   1/1     Running   0          18m
 nginx-web                       1/1     Running   0          15s
 ```
 
