@@ -2,7 +2,7 @@
 
 ## Create ConfigMap for Redis Cache
 ```
-kubectl create configmap example-redis-config --from-file=config/redis-config
+kubectl create configmap example-redis-config --from-file=$HOME/core-k8s/labs/configmap/config/redis-config
 ```
 
 ## Verify ConfigMap looks correct
@@ -29,25 +29,54 @@ metadata:
 
 ## Create Redis POD that uses ConfigMap
 ```
-kubectl create -f manifests/redis-pod.yaml
+kubectl create -f $HOME/core-k8s/labs/configmap/manifests/redis-pod.yaml
 ```
 
 ## Confirm Redis POD launched with ConfigMap settings
 ```
-kubectl exec -it redis redis-cli
+kubectl exec -it redis -- redis-cli
+```
+
+Execute the following commands: 
+
+```bash
 CONFIG GET maxmemory
 ```
 
-Should see something like this 
+Output:
+
 ```
 1) "maxmemory"
 2) "2097152"
-127.0.0.1:6379> CONFIG GET maxmemory-policy
+```
+
+
+
+```bash
+CONFIG GET maxmemory-policy
+```
+
+
+
+Output: 
+
+```
 1) "maxmemory-policy"
 2) "allkeys-lru"
 ```
 
+
+
+Exit the redis container
+
+```
+exit
+```
+
+
+
 ## Cleanup
+
 ```
 kubectl delete pod redis
 ```
@@ -65,7 +94,7 @@ Look in the `config` directory and you will see `reverseproxy.conf` which contai
 	* Container 1
 		* name: `helloworld-nginx`
 		* label: `app: helloworld-nginx`
-		* image: `nginx:1.15`
+		* image: `nginx`
 		* port: `80`
 		* Mount configMap `nginx-config`  to `/etc/nginx/conf.d` with 
 			* key of `reverseproxy.conf` 
@@ -82,7 +111,7 @@ Look in the `config` directory and you will see `reverseproxy.conf` which contai
 	* type: `NodePort`
 	
 ### Validate
-Now run `curl` to connect to server on port 80 and confirm you get 
+Now run `curl` to connect to server on port 80 and confirm you get:
 ```
 * Rebuilt URL to: 0:80/
 *   Trying 0.0.0.0...
@@ -104,7 +133,7 @@ Now run `curl` to connect to server on port 80 and confirm you get
 <
 * Connection #0 to host 0 left intact
 Hello World!
-```   
+```
 
 We can see that it connects to Nginx and then returns `Hello World!` which is what we've defined in our Node.js app in the `k8s-demo` container.
 
