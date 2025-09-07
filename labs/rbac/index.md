@@ -59,7 +59,18 @@ Start off by creating the `office` namespace
 kubectl create namespace office
 ```
 
+
+
+## Create and enter lab directory
+
+```
+mkdir -p $HOME/labs/rbac && cd $HOME/labs/rbac
+```
+
+
+
 ## Create the user credentials
+
 As previously mentioned, Kubernetes does not have API Objects for User Accounts. Of the available ways to manage authentication (see  [Kubernetes official documentation](https://kubernetes.io/docs/admin/authentication)  for a complete list), we will use OpenSSL certificates for their simplicity. The necessary steps are:
 * Create a private key for your user. In this example, we will name the file `employee.key`:
 
@@ -172,3 +183,20 @@ kubectl --context=employee-context get pods --namespace=default
 ```
 
 Success! You've created a user with limited permissions in your Kubernetes cluster
+
+
+
+## Cleanup
+
+To clean up everything run 
+
+```
+kubectl delete --ignore-not-found=true -f .
+kubectl delete all --all
+```
+
+Confirm everything was deleted 
+
+```
+kubectl get all
+```
