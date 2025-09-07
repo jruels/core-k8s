@@ -15,9 +15,12 @@ kubectl get all
 
 
 ## Create a Deployment manifest(Pod, Service, Replicas) 
-Using your favorite editor (Vim, Nano, Emacs) create a file called `hello-world.yaml` with the following content: 
-**NOTE** the “selector” app field is the same as the deployment metadata app field.
-**NOTE** that Kind is Service and Deployment, also, note the statically declared `NodePort`.
+Using VS Code, create a lab directory `$HOME/labs/lab4`. In the directory, create a file called `hello-world.yaml` with the following content: 
+
+**NOTE:** the “selector” app field is the same as the deployment metadata app field.
+
+**NOTE:** that the Kind is Service and Deployment. Also, note the statically declared `NodePort`.
+
 ```yaml
 apiVersion: v1
 kind: Service
@@ -58,13 +61,13 @@ spec:
 
 ## Deploy a basic deployment 
 ```
-kubectl apply -f hello-world.yaml
+kubectl apply -f $HOME/labs/hello-world.yaml
 ```
 
 Example output: 
 ```
-service "hw-deployment" created 
-deployment "hw-deployment" created
+service/hello-world-deployment created
+deployment.apps/hello-world-deployment created
 ```
 
 List deployments
@@ -74,9 +77,8 @@ kubectl get deployment
 
 Example output: 
 ```
-$ kubectl get deployment 
-NAME           DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
-hw-deployment    1         1         1           1      13s
+NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
+hello-world-deployment   3/3     3            3           37s
 ```
 
 Show all Kubernetes objects: 
@@ -159,6 +161,6 @@ hello-world-deployment-8488f8789f-rfp5v   1/1     Running   0          9m25s
 ## Cleanup 
 Now remove the deployment and service 
 ```
-kubectl delete -f hello-world.yaml
+kubectl delete -f $HOME/labs/hello-world.yaml
 ```
 

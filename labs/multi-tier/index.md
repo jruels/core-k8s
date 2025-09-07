@@ -296,10 +296,7 @@ kubectl rollout history deployment/frontend --revision=<number>
 ## Cleanup
 To clean up everything run 
 ```
-kubectl delete deployment -l app=redis
-kubectl delete service -l app=redis
-kubectl delete deployment -l app=guestbook
-kubectl delete service -l app=guestbook
+kubectl delete --ignore-not-found=true -f manifests
 ```
 
 Confirm everything was deleted 
