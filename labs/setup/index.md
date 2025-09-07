@@ -62,6 +62,14 @@ Save the changes to the SSH configuration file and close it.
 5. Accept the SSH fingerprint
 6. You can now open a terminal in this new window and run commands on the remote servers.
 
+In the VS Code window connected to the leader, open a terminal, and run: 
+
+```bash
+git clone https://github.com/jruels/core-k8s
+```
+
+
+
 ### Create a working directory.
 
 In Visual Studio Code, you can create a new folder or file as if it were on your local machine.
