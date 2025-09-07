@@ -2,13 +2,22 @@
 ## Create secret
 This example shows how Secrets can be used to allow Pods access to a database. 
 
+Create and enter a new lab directory 
+
+```bash
+mkdir -p $HOME/labs/secrets && cd $HOME/labs/secrets
+```
+
+
+
 Create secret files 
+
 ```
 echo -n "admin" > ./username.txt
 echo -n "1f2d1e2e67df" > ./password.txt
 ```
 
-Now let’s create the secrets objects out of the files. 
+Now, let’s create the secret objects out of the files. 
 ```
 kubectl create secret generic db-user-pass --from-file=./username.txt --from-file=./password.txt
 ```
@@ -90,7 +99,6 @@ type: Opaque
 Now let’s decode it 
 ```
 echo "MWYyZDFlMmU2N2Rm" | base64 --decode
-1f2d1e2e67df
 ```
 
 
@@ -98,6 +106,9 @@ echo "MWYyZDFlMmU2N2Rm" | base64 --decode
 Secrets can be mounted as data volumes or be exposed as environment variables to be used by a container in a pod. They can also be used by other parts of the system, without being directly exposed to the pod. For example, they can hold credentials that other parts of the system should use to interact with external systems on your behalf.
 
 To use Secrets as files from a Pod we can use the following YAML
+
+`secret-mount.yaml`
+
 ```
 apiVersion: v1
 kind: Pod
@@ -121,22 +132,25 @@ Inside the container that mounts a secret volume, the secret keys appear as file
 
 List secrets 
 ```
-kubectl exec -it mypod ls /etc/foo
+kubectl exec -it mypod -- ls /etc/foo
 ```
 
 Output username 
 ```
-kubectl exec -it mypod cat /etc/foo/username
+kubectl exec -it mypod -- cat /etc/foo/username
 ```
 
 Output password
 ```
-kubectl exec -it mypod cat /etc/foo/password
-```		
+kubectl exec -it mypod -- cat /etc/foo/password
+```
 
 
 ### Secrets as Environment Variables 
 Use the following YAML to create a Pod that uses environment variable secret
+
+`secret-env.yaml`
+
 ```
 apiVersion: v1
 kind: Pod
@@ -160,10 +174,11 @@ spec:
   restartPolicy: Never
 ```
 
-Now let’s confirm secret is available in the container. 
-Log into container 
+Now let’s confirm the secret is available in the container. 
+Log in to the container 
+
 ```
-kubectl exec -it secret-env-pod bash 
+kubectl exec -it secret-env-pod -- bash 
 ```
 
 Echo the environment variables 
@@ -171,5 +186,16 @@ Echo the environment variables
 echo $SECRET_USERNAME
 echo $SECRET_PASSWORD
 ```
+
+
+
+You can also get the vault of the variables from the host machine. 
+
+```
+kubectl exec secret-env-pod -- sh -c 'echo $SECRET_USERNAME'
+kubectl exec secret-env-pod -- sh -c 'echo $SECRET_USERNAME'
+```
+
+
 
 ## Lab complete 
