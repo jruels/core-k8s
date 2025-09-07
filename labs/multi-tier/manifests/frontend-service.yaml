@@ -9,10 +9,12 @@ spec:
   # if your cluster supports it, uncomment the following to automatically create
   # an external load-balanced IP for the frontend service.
   # type: LoadBalancer
-  type: LoadBalancer
+  #  type: LoadBalancer
+  type: NodePort
   ports:
-    # the port that this service should serve on
-  - port: 80
+    - port: 80         # the port inside the cluster
+      targetPort: 80   # optional: defaults to the same as 'port'
+      nodePort: 30080  # optional: Kubernetes will auto-assign if omitted
   selector:
     app: guestbook
     tier: frontend

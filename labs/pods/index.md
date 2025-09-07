@@ -8,7 +8,12 @@ In this lab we will configure a Kubernetes Pod hosting a mysql database from the
 3. Run a command to exec a shell into a Kubernetes hosted container
 4. Run a command to exec directly into the mysql-client from the command-line
 
+## Execute on the Leader node 
+
+The following commands should all be executed in the VS Code window connected to the leader node.
+
 ### Deploy a Pod from the command-line 
+
 1. Show the nodes of the cluster 
 ```
 kubectl get nodes 
@@ -43,7 +48,7 @@ kubectl get pods
 7. Get information about Pod in `json` format 
 ```
 kubectl get pod nginx-pod-lab -o json 
-``` 
+```
 
 8. Now get info about it in `YAML` syntax
 ```
@@ -56,12 +61,20 @@ kubectl delete pod nginx-pod-lab
 ```
 
 ### Create Pod from manifest
-1. In the manifests directory you will find  `nginx-kube.yml` . This file will launch a simple nginx server. Deploy it with following:
+1. Enter the lab directory.
+
+```bash
+cd $HOME/core-k8s/labs/pods
+```
+
+2. In the manifests directory, you will find  `nginx-kube.yml` . This file will launch a simple nginx server. Deploy it with the following:
+
 ```
 kubectl apply -f manifests/nginx-kube.yml
 ```
 
-2. Show the deployed Pods
+3. Show the deployed Pods
+
 ```
 kubectl get pods 
 ```
@@ -73,7 +86,8 @@ nginx-pod-lab                   1/1     Running   0          18m
 nginx-web                       1/1     Running   0          15s
 ```
 
-3. Cleanup everything 
+4. Cleanup everything 
+
 ```
 kubectl delete pods --all
 ```
@@ -157,29 +171,54 @@ exit
 ```
 kubectl run mysql-demo --image=mysql:5.7 --port=3306 --env="MYSQL_ROOT_PASSWORD=password" --restart=Never
 ```
-**Note**: Updated to MySQL 5.7 as 5.5 is deprecated. Added `--restart=Never` to create a Pod.
-
-2. Show all of the running Pods, note the name of the Pod you just created
+2. Show all of the running Pods, and note the name of the Pod you just created
 ```
 kubectl get pods 
 ```
 
 Sample output:
 ```
-NAME                            READY   STATUS    RESTARTS   AGE
-nginx-pod-lab-6b47f84ff-t9qzk   1/1     Running   0          42m
-nginx-web                       1/1     Running   0          23m
-two-containers                  1/2     Running   0          16m
+NAME             READY   STATUS     RESTARTS   AGE
+mysql-demo       1/1     Running    0          3m24s
+two-containers   1/2     NotReady   0          4m54s
 ```
 
 3. Log into the new MySQL container: 
 ```
-kubectl exec -it <mysql-pod-name> -- mysql -ppassword
+kubectl exec -it mysql-demo -- mysql -ppassword
 ```
 
-4. Exit MySQL container
+4. Look around 
+```bash
+SHOW DATABASES;
 ```
+
+```bash
+SELECT * FROM mysql.user LIMIT 1\G
+```
+
+5. Exit MySQL: 
+
+```bash
+quit
+```
+
+6. Exit the container
+
+```bash
 exit
 ```
+
+
+
+### Clean up 
+
+Run the following to delete resources created in this lab: 
+
+```bash
+kubectl delete --ignore-not-found=true manifests 
+```
+
+
 
 ## Lab complete

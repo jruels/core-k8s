@@ -9,7 +9,7 @@ This lab has you run a few different commands to familiarize yourself with `kube
 
 
 
-## Execute on Leader node 
+## Execute on the Leader node 
 
 The following commands should all be executed in the VS Code window connected to the leader node.
 
