@@ -7,7 +7,14 @@ This lab has you run a few different commands to familiarize yourself with `kube
 2. List Kubernetes Services and Namespaces
 3. Look at Kubernetes components 
 
+
+
+## Execute on Leader node 
+
+The following commands should all be executed in the VS Code window connected to the leader node.
+
 ### List Pods and Nodes
+
 1. Enter the following to list Pods in the `default` namespace
 ```
 kubectl get pods 
