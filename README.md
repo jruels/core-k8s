@@ -3,8 +3,8 @@
 This site includes the labs for Core Kubernetes class. 
 
 ## lab VMs  
-[//]: # (https://docs.google.com/spreadsheets/d/1psMAAPxgHq9wpZVftao9UT8MIWR1xljq-WB8aOiVBRI/edit?usp=sharing)  
-Instructor will provide lab VM sheet.
+[Windows VMs](VM_access.md)   
+[Kubernetes VMs](https://docs.google.com/spreadsheets/d/1hqMfSpDqjohHlOX_bwkYhIvntLVW6E8ktLa3uQLHL7k/edit?usp=sharing)  
 
 [Lab Setup](labs/setup/)  
 
