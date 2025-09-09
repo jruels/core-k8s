@@ -1,6 +1,6 @@
 | Name                  | Username     | Virtual Machine Password | Virtual Machine Portal       |
 |:----------------------|:-------------|:-------------------------|:-----------------------------|
-| Glenda Aranas         | WSAUTO25-91  | tekWSAUTO25!             | https://my.ablazedesktop.com |
+| Glenda Aranas         | WSAUTO25-91  | tekWSAUTO25!             | [Ablaze Portal](https://my.ablazedesktop.com) |
 | Rijana Bhandari       | WSAUTO25-92  | tekWSAUTO25!             |                              |
 | Tanvi Borkar          | WSAUTO25-93  | tekWSAUTO25!             |                              |
 | Elaine Chen           | WSAUTO25-94  | tekWSAUTO25!             |                              |
