@@ -61,7 +61,7 @@ spec:
 
 ## Deploy a basic deployment 
 ```
-kubectl apply -f $HOME/labs/hello-world.yaml
+kubectl apply -f $HOME/labs/lab4/hello-world.yaml
 ```
 
 Example output: 
@@ -161,6 +161,6 @@ hello-world-deployment-8488f8789f-rfp5v   1/1     Running   0          9m25s
 ## Cleanup 
 Now remove the deployment and service 
 ```
-kubectl delete -f $HOME/labs/hello-world.yaml
+kubectl delete -f $HOME/labs/lab4/hello-world.yaml
 ```
 
