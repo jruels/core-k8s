@@ -208,7 +208,7 @@ quit
 Run the following to delete resources created in this lab: 
 
 ```bash
-kubectl delete --ignore-not-found=true manifests 
+kubectl delete --ignore-not-found=true -f manifests 
 ```
 
 
