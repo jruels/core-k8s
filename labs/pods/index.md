@@ -203,14 +203,6 @@ SELECT * FROM mysql.user LIMIT 1\G
 quit
 ```
 
-6. Exit the container
-
-```bash
-exit
-```
-
-
-
 ### Clean up 
 
 Run the following to delete resources created in this lab: 
