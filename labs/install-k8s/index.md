@@ -97,7 +97,7 @@ The join command will look something like this:
 kubeadm join <LEADER_IP>:6443 --token <token> --discovery-token-ca-cert-hash <hash> --ignore-preflight-errors=all --cri-socket=unix:///var/run/cri-dockerd.sock
 ```
 
-**IMPORTANT**: Use the join command from your `kubeadm init output`, and add `--ignore-preflight-errors=all` `--cri-socket=unix:///var/run/cri-dockerd.sock`.
+**IMPORTANT**: Use the join command from your `kubeadm init output`, and add `--ignore-preflight-errors=all` `--cri-socket=unix:///var/run/cri-dockerd.sock`
 
 To confirm nodes have joined successfully, run the following on the leader node: 
 ```
