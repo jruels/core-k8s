@@ -106,10 +106,6 @@ Using a browser, open the web page at: `http://<LEADER_IP>:30901`
 
 Replace `<LEADER_IP>` with your leader node's IP address.
 
-You will see a page similar to below: 
-
-![](index/DF2608A9-8F6C-4EDB-9122-F1A375696A6F.png)
-
 ## Scaling the pods 
 Now that we have our application running, let's increase the replica count to scale the deployment. First get a list of running pods.
 ```
