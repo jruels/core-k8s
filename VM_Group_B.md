@@ -2,7 +2,7 @@
 |:------------------------------|:-------------|:-------------------------|:-----------------------|
 | Fauzan Abdallah               | WSAUTO25-31  | TEKwsauto25!             | [Ablaze Portal](https://my.ablazedesktop.com) |
 | Yugandhar Alaparthi           | WSAUTO25-32  | TEKwsauto25!             |                        |
-| Divya Arun                    | WSAUTO25-33  | TEKwsauto25!             |                        |
+| Marcus                    | WSAUTO25-33  | TEKwsauto25!             |                        |
 | Jacob Audu                    | WSAUTO25-34  | TEKwsauto25!             |                        |
 | Ross Crowley                  | WSAUTO25-35  | TEKwsauto25!             |                        |
 | Hugo Delgado                  | WSAUTO25-36  | TEKwsauto25!             |                        |
