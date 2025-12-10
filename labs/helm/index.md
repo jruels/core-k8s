@@ -106,9 +106,7 @@ demo-app     NodePort   10.15.246.153                      80:31075/TCP   2m51s
 ```
 
 ## Confirm app is running 
-To access the app follow the instructions from the `helm install` command:
-
-This will show the URL to load in a browser to access the application. 
+To access the app follow the instructions from the `helm install` command, but use the Leader IP from the spreadsheet:
 
 
 ## Update Chart with our application values 
