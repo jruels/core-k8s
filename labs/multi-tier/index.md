@@ -199,7 +199,7 @@ kubectl describe deployment frontend |grep Image
 
 You should see `v4`
 ```
-Image:      gcr.io/google-samples/gb-frontend:v4
+Image:      aslaen/gb-frontend:v4
 ```
 
 Now we are going to update our YAML file 
@@ -211,7 +211,7 @@ Replace `v4` with `v5` so it looks like below:
 ```
 ..snip
 - name: php-redis
-        image: gcr.io/google-samples/gb-frontend:v5
+        image: aslaen/gb-frontend:v5
 ```
 
 Now save the file and deploy the new version 
