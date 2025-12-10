@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: helloworld-nginx
+    app: helloworld-nginx
+  name: helloworld-nginx
+spec:
+  restartPolicy: Always
+ 
+  containers:
+  - name: helloworld-nginx
+    image: nginx:1.15
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - mountPath: /etc/nginx/conf.d
+      name: nginx-config
+ 
+  - name: k8s-demo
+    image: aslaen/k8s-demo
+    ports:
+    - containerPort: 3000
+ 
+  volumes:
+    - name: nginx-config
+      configMap:
+        name: nginx-config
+        items:
+        - key: reverseproxy.conf
+          path: reverseproxy.conf
