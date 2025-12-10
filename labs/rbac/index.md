@@ -24,7 +24,7 @@ Examples of resources are:
 *  [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) 
 *  [Nodes](https://kubernetes.io/docs/concepts/architecture/nodes/) 
 *  [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) 
-*  [Namespaces](https://kubernetes.io/docs/user-guide/namespaces/) 
+*  [Namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) 
 
 Examples of possible operations over these resources are:
 * *create*

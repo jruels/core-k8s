@@ -245,7 +245,7 @@ NAME            TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)         
 helm-demo-app   NodePort   10.31.244.161                       8080:30099/TCP   2m18s
 ```
 
-Now let's access our application 
+Now let's access our application. Replace `8080` in the following with the NodePort from the command above.
 ```
 curl http://$SERVICE_IP:8080/hello
 ```
