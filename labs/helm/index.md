@@ -148,13 +148,14 @@ service:
 
 We also need to update `targetPort` in `demo-app/templates/service.yaml` so it will point to port we defined in `values.yaml`
 
-
 ```yaml
+{% raw %}
 spec:
     type: {{ .Values.service.type }}
     ports:
         - port: {{ .Values.service.port }}
           targetPort: {{ .Values.service.port }}
+{% endraw %}
 ```
 
 We now need to update both `demo-app/templates/deployment.yaml` and `demo-app/values.yaml` to remove the `liveness` and `readiness` probe sections.
