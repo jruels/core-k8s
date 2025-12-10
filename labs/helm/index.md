@@ -3,7 +3,12 @@ In this lab you will learn how to how to write your first Chart, and deploy a co
 
 ## Install Helm
 
-Confirm if `helm` is installed: 
+Run the following command to install Helm 
+```bash
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+```
+
+Confirm `helm` is installed: 
 ```sh
 helm version
 ```
