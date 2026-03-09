@@ -42,10 +42,6 @@ Host node1
   IdentityFile "C:\Users\tekstudent\Downloads\repos\core-k8s\keys\lab.pem"
   User ubuntu
   
-Host node2
-  HostName <IP of node2>
-  IdentityFile "C:\Users\tekstudent\Downloads\repos\core-k8s\keys\lab.pem"
-  User ubuntu
 ```
 
 ### Save the SSH configuration file.
