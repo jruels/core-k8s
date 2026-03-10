@@ -23,3 +23,7 @@ Lab 6: [ConfigMap](labs/configmap/)
 Lab 7: [Secrets](labs/secrets/)  
 Lab 8: [Helm](labs/helm/)  
 Lab 9: [RBAC](labs/rbac/)  
+
+```
+kubectl run busybox --image=busybox --restart=Never -- /bin/sh -c "while true; do sleep 5; done"
+```
