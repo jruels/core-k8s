@@ -27,3 +27,17 @@ Lab 9: [RBAC](labs/rbac/)
 ```
 kubectl run busybox --image=busybox --restart=Never -- /bin/sh -c "while true; do sleep 5; done"
 ```
+
+```
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-only-same-namespace
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector: {}
+```
