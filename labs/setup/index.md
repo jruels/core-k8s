@@ -29,19 +29,13 @@ In the Remote Explorer, hover your mouse cursor over **SSH**, click on the gear 
 
 ### Add the SSH configuration for the lab servers.
 
-Add the following lines to the SSH configuration file, replacing `<IP of leader>, <IP of node1>, <IP of node2>` with the actual IP addresses.
+Add the following lines to the SSH configuration file, replacing `<IP of leader>` with the actual IP address.
 
 ```plaintext
 Host leader
   HostName <IP of leader>
   IdentityFile "C:\Users\tekstudent\Downloads\repos\core-k8s\keys\lab.pem"
   User ubuntu
-  
-Host node1
-  HostName <IP of node1>
-  IdentityFile "C:\Users\tekstudent\Downloads\repos\core-k8s\keys\lab.pem"
-  User ubuntu
-  
 ```
 
 ### Save the SSH configuration file.
@@ -49,22 +43,20 @@ Host node1
 Save the changes to the SSH configuration file and close it.
 
 
-### Connect to the lab servers.
+### Connect to the lab server.
 
-1. In the Remote Explorer, you should now see the entry for each server under "SSH Targets."
-2. Click on the entry to connect to each server.
-3. Visual Studio Code will open a new window connected to each server.
+1. In the Remote Explorer, you should now see the entry for the Leadder node under "SSH Targets."
+2. Click on the entry to connect to the server.
+3. Visual Studio Code will open a new window connected to the server.
 4. When prompted for the Operating System, choose 'Linux'.  
 5. Accept the SSH fingerprint
-6. You can now open a terminal in this new window and run commands on the remote servers.
+6. You can now open a terminal in this new window and run commands on the remote server.
 
 In the VS Code window connected to the leader, open a terminal, and run: 
 
 ```bash
 git clone https://github.com/jruels/core-k8s
 ```
-
-
 
 ### Create a working directory.
 
