@@ -121,6 +121,12 @@ NOTE: We are using the `--record` flag to keep a history of the deployment, whic
 kubectl apply --record -f manifests/frontend-deployment.yaml
 ```
 
+> **Alternative:** The `--record` flag is deprecated in newer versions of Kubernetes. You can use the `kubernetes.io/change-cause` annotation instead:
+> ```
+> kubectl apply -f manifests/frontend-deployment.yaml
+> kubectl annotate deployment frontend kubernetes.io/change-cause="Initial deployment of guestbook frontend"
+> ```
+
 Now let’s verify they are running 
 ```
 kubectl get pods -l app=guestbook -l tier=frontend
@@ -214,10 +220,16 @@ Replace `v4` with `v5` so it looks like below:
         image: aslaen/gb-frontend:v5
 ```
 
-Now save the file and deploy the new version 
+Now save the file and deploy the new version
 ```
 kubectl apply --record -f  manifests/frontend-deployment.yaml
 ```
+
+> **Alternative:** Using annotations instead of `--record`:
+> ```
+> kubectl apply -f manifests/frontend-deployment.yaml
+> kubectl annotate deployment frontend kubernetes.io/change-cause="Upgrade frontend to v5" --overwrite
+> ```
 
 Run the following to see that the Pods are being updated
 ```
@@ -242,7 +254,12 @@ Great!  Now you can confirm it updated to `v5`
 kubectl describe deployment frontend | grep Image
 ```
 
-Now that you're successfully running `v5`  update the YAML file to `v6` and deploy it.  Do not forget to use `--record`
+Now that you're successfully running `v5`  update the YAML file to `v6` and deploy it.  Do not forget to use `--record` (or the annotation alternative)
+
+> **Alternative:** After deploying v6:
+> ```
+> kubectl annotate deployment frontend kubernetes.io/change-cause="Upgrade frontend to v6" --overwrite
+> ```
 
 After the update has completed confirm it is running `v6`
 ```
@@ -252,18 +269,27 @@ kubectl describe deployment frontend | grep Image
 ## Rollback deployment 
 Now let's say that something went wrong during our update, and we need to rollback to a previous version of our application. 
 
-As long as we used the `--record` option when deploying this is easy. 
+As long as we used the `--record` option (or the `kubernetes.io/change-cause` annotation) when deploying, this is easy.
 
-Run the following to check the rollout history 
+Run the following to check the rollout history
 ```
 kubectl rollout history deployment frontend
 ```
 
+If you used `--record`, the output will look like:
 ```
 REVISION  CHANGE-CAUSE
 1         kubectl apply --record=true --filename=manifests/frontend-deployment.yaml
 2         kubectl apply --record=true --filename=manifests/frontend-deployment.yaml
 3         kubectl apply --record=true --filename=manifests/frontend-deployment.yaml
+```
+
+If you used the annotation alternative, the output will show your custom messages:
+```
+REVISION  CHANGE-CAUSE
+1         Initial deployment of guestbook frontend
+2         Upgrade frontend to v5
+3         Upgrade frontend to v6
 ```
 
 To see the changes made for each revision we can run the following, replacing `--revision` with the one you want to know more about
