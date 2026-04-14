@@ -33,8 +33,8 @@ Now let's create a new chart `demo-app`
 helm create demo-app
 ```
 
-You will now see a new `demo-app` directory created. 
-Look inside this directory and you will see something like below: 
+You will now see a new `demo-app` directory created.
+Look inside this directory and you will see something like below:
 ```
 demo-app
 ├── charts
@@ -42,6 +42,7 @@ demo-app
 ├── templates
 │   ├── deployment.yaml
 │   ├── _helpers.tpl
+│   ├── httproute.yaml
 │   ├── ingress.yaml
 │   ├── NOTES.txt
 │   ├── serviceaccount.yaml
@@ -109,10 +110,10 @@ demo-app     NodePort   10.15.246.153                      80:31075/TCP   2m51s
 To access the app follow the instructions from the `helm install` command, but use the Leader IP from the spreadsheet:
 
 
-## Update Chart with our application values 
-Now that we've run through deploying the default `nginx` app we need to update the files to deploy our own application. 
+## Update Chart with our application values
+Now that we've run through deploying the default `nginx` app we need to update the files to deploy our own application.
 
-Start by updating `demo-app/Chart.yaml` so it contains: 
+Start by updating `demo-app/Chart.yaml` so it contains:
 ```yaml
 apiVersion: v2
 name: helm-demo-app
@@ -122,10 +123,10 @@ version: 0.0.1
 appVersion: "0.0.1"
 ```
 
-The following has been updated:    
-`appVersion`: This is the version of application that will be deployed   
-`description`: Description of Chart    
-`version`: Version of the Chart   
+The following has been updated:
+`appVersion`: This is the version of application that will be deployed
+`description`: Description of Chart
+`version`: Version of the Chart
 
 ### Update values
 Now in `demo-app/values.yaml` update the following values:
@@ -139,7 +140,7 @@ The `values.yaml` has the following content after our changes
 ```yaml
 image:
     repository: aslaen/helm-demo
-    tag: v1 
+    tag: v1
 
 service:
     type: NodePort
@@ -149,45 +150,56 @@ service:
 We also need to update `targetPort` in `demo-app/templates/service.yaml` so it will point to port we defined in `values.yaml`
 
 ```yaml
-{% raw %}
 spec:
     type: {{ .Values.service.type }}
     ports:
         - port: {{ .Values.service.port }}
           targetPort: {{ .Values.service.port }}
-{% endraw %}
+
 ```
 
-We now need to update both `demo-app/templates/deployment.yaml` and `demo-app/values.yaml` to remove the `liveness` and `readiness` probe sections.
+### Remove unused templates
+Newer versions of Helm generate extra templates (`httproute.yaml`, `hpa.yaml`) that reference values we don't need. Remove them to avoid lint errors:
 
-First, in `demo-app/values.yaml`, remove or comment out the following sections:
+```
+rm -f demo-app/templates/httproute.yaml demo-app/templates/hpa.yaml
+```
+
+### Remove probe templates
+We need to remove the `liveness` and `readiness` probe sections from the deployment template since our application doesn't serve on the default health check path.
+
+In `demo-app/templates/deployment.yaml`, find and **delete** the entire probe blocks (including the `{{- with }}` and `{{- end }}` wrappers):
 
 ```yaml
-# livenessProbe:
-#   httpGet:
-#     path: /
-#     port: http
-# readinessProbe:
-#   httpGet:
-#     path: /
-#     port: http
+          # Delete these lines:
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 ```
 
-Then, in `demo-app/templates/deployment.yaml`, remove or comment out the references to these probes:
+Also in `demo-app/values.yaml`, remove or comment out the `livenessProbe` and `readinessProbe` sections if they exist.
 
-```yaml
-          # Remove or comment out these lines
-          # {{- with .Values.livenessProbe }}
-          # livenessProbe:
-          #   {{- toYaml . | nindent 12 }}
-          # {{- end }}
-          # {{- with .Values.readinessProbe }}
-          # readinessProbe:
-          #   {{- toYaml . | nindent 12 }}
-          # {{- end }}
+### Fix NOTES.txt
+The generated `NOTES.txt` may reference `httpRoute` values we removed. Replace its contents with:
+
+```
+1. Get the application URL by running these commands:
+{{- if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "demo-app.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{- else if contains "ClusterIP" .Values.service.type }}
+  kubectl --namespace {{ .Release.Namespace }} port-forward service/{{ include "demo-app.fullname" . }} 8080:{{ .Values.service.port }}
+  echo http://127.0.0.1:8080
+{{- end }}
 ```
 
-### Check syntax 
+### Check syntax
 Now we need to confirm the changes we made are valid
 
 Rename the `demo-app` to `helm-demo-app` to match our `Chart.yaml`
@@ -246,10 +258,12 @@ NAME            TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)         
 helm-demo-app   NodePort   10.31.244.161                       8080:30099/TCP   2m18s
 ```
 
-Now let's access our application. Replace `8080` in the following with the NodePort from the command above.
+Now let's access our application. Use the NodePort from the command above:
 ```
-curl http://$SERVICE_IP:8080/hello
+curl http://localhost:<NodePort>/hello
 ```
+
+Replace `<NodePort>` with the actual port number shown in the service output (the number after `8080:` in the `PORT(S)` column).
 
 Output should show the hostname of the Pod we connected to. 
 ```
