@@ -3,7 +3,6 @@
 This site includes the labs for Core Kubernetes class. 
 
 ## lab VMs  
-#[Kubernetes VMs](https://docs.google.com/spreadsheets/d/1DW7WXk3GSkM1-EqooJrRBSpdrDSjcXwVIKFgxQGbihw/edit?usp=sharing)  
 
 [Lab Setup](labs/setup/index.md)  
 
