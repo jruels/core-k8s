@@ -158,7 +158,7 @@ kubectl get services
 You should see something like this 
 ```
 NAME           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
-frontend       NodePort    10.107.73.47   <none>        80:31495/TCP   34s
+frontend       NodePort    10.107.73.47   <none>        80:30080/TCP   34s
 kubernetes     ClusterIP   10.96.0.1      <none>        443/TCP        44m
 redis-leader   ClusterIP   10.107.62.78   <none>        6379/TCP       11m
 redis-follower    ClusterIP   10.98.54.128   <none>        6379/TCP       6m
@@ -167,9 +167,9 @@ redis-follower    ClusterIP   10.98.54.128   <none>        6379/TCP       6m
 ### Viewing the Frontend Service 
 To load the front end in a browser visit your leader server IP and use the port from previous command. 
 
-In the example above we can see that `frontend` Service is running on `NodePort` 31495 so you would visit the following in a web browser:
+In the example above we can see that `frontend` Service is running on `NodePort` 30080 so you would visit the following in a web browser:
 
-`http://<LEADER_IP>:31495`
+`http://<LEADER_IP>:30080`
 
 Replace `<LEADER_IP>` with your leader node's IP address and use the port number that was assigned to your service.
 
